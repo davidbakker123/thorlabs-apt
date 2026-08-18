@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from thorlabs_apt.kbd101 import KBD101
+from thorlabs_apt.kpa101 import KPA101, OperationMode
 
 MGMSG_MOD_IDENTIFY = 0x0223
 
@@ -10,14 +10,20 @@ MGMSG_HW_GET_INFO = 0x0006
 # K-Cube Position Aligner
 
 if __name__ == "__main__":
-    dev = KBD101(serial_number="28251738")
-    print(dev._hw_info)
+    from thorlabs_apt.device import list_devices
 
-    dev.enable_channel(1)
-    print(dev.get_velocity_params())
-    d = dev.get_stage_params()
+    print(list_devices())
+    # dev = KBD101(serial_number="28251738")
+    # print(dev._hw_info)
+    #
+    kpa = KPA101(serial_number="69252608A")
+    print(kpa._hw_info)
 
-    print(dev.get_homing_params())
+    # dev.enable_channel(1)
+    # print(dev.get_velocity_params())
+    # d = dev.get_stage_params()
+
+    # print(dev.get_homing_params())
     # dev.home()
     # print(dev.position())
     # dev.move_relative(1.0)
@@ -32,15 +38,18 @@ if __name__ == "__main__":
 
     # kpa = KPA101(serial_number="69252738")
 
-    # print(kpa.position_demand_params)
+    print(kpa.position_demand_params)
 
-    # kpa.operation_mode = OperationMode.OPEN_LOOP
-    # print(kpa.operation_mode)
-    # print(kpa.status_bits)
-    # print(kpa.display_settings)
+    kpa.operation_mode = OperationMode.OPEN_LOOP
+    print(kpa.operation_mode)
+    print(kpa.status_bits)
+    print(kpa.display_settings)
     # print(kpa.position)
     # kpa.position = (1.0, 1.0)
     # print(kpa.position)
-    # print(kpa.readings)
-    # # while True:
-    # #     print(kpa.readings)
+    print(kpa.readings)
+    print(kpa.loop_params_2)
+    print(kpa.trig_io_config)
+    # while True:
+    #     print(kpa.readings)
+

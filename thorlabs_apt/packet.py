@@ -4,7 +4,10 @@ import inspect
 import struct
 from enum import IntEnum
 from operator import itemgetter
-from typing import Any, Callable, Generic, Self, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Self, TypeVar, overload
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 T = TypeVar("T")
 
@@ -12,13 +15,13 @@ T = TypeVar("T")
 class Buffer:
     __slots__ = ("buff",)
 
-    def __init_subclass__(cls, **kwargs):
+    def __init_subclass__(cls, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)
         cls._mapping = {}
         for name, t in inspect.getmembers(cls, lambda x: isinstance(x, field)):
             cls._mapping[name] = (t.format, t.offset, t.decode, t.default)
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.buff = bytearray(self.size)
 
         ordered_fields = [name for name, _ in sorted(self._mapping.items(), key=lambda item: item[1][1])]
@@ -43,7 +46,7 @@ class Buffer:
             msg = f"multiple values for field(s): {names}"
             raise TypeError(msg)
 
-        for arg, name in zip(args, ordered_fields):
+        for arg, name in zip(args, ordered_fields, strict=False):
             setattr(self, name, arg)
 
         for name, value in kwargs.items():
@@ -66,6 +69,8 @@ class Buffer:
                 attrs += [f"{name}={value.__class__.__name__}<{value.name}:{value.value}>"]
             elif isinstance(value, str) or decode:
                 attrs += [f"{name}={value}"]
+            elif isinstance(value, float):
+                attrs += [f"{name}={value:.4f}"]
             else:
                 attrs += [f"{name}=0x{value:0{hex_width}x}"]
         attrs_str = ", ".join(attrs)
@@ -92,7 +97,7 @@ class Buffer:
         return offset + struct.calcsize(format)
 
 
-class field(Generic[T]):
+class field[T]:
     def __init__(
         self,
         offset: int,

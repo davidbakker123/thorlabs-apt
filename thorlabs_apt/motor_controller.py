@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from enum import IntEnum
+from typing import Any
 
 from thorlabs_apt.device import APTDevice
 from thorlabs_apt.packet import APTPacket, Buffer, field
@@ -84,7 +85,7 @@ class MotorHomingParams(Buffer):
 
 
 class APTMotorController(APTDevice):
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self._stage_params = self.get_stage_params()
 

@@ -12,20 +12,24 @@ from thorlabs_apt.packet import (
 )
 
 
-def find_device(vid: int | None = None, pid: int | None = None, serial_number: str | None = None):
+def find_device(serial_number: str | None = None) -> str | None:
     for p in serial.tools.list_ports.comports():
         if serial_number and p.serial_number == serial_number:
             return p.device
+    return None
 
 
-def list_devices():
+def list_devices() -> str:
     result = ""
     for p in serial.tools.list_ports.comports():
         if pid := p.pid:
             pid = f"{pid:#06x}"
         if vid := p.vid:
             vid = f"{vid:#06x}"
-        result += f"device={p.device}, manufacturer={p.manufacturer}, product={p.product}, vid={vid}, pid={pid}, serial_number={p.serial_number}\n"
+        result += (
+            f"device={p.device}, manufacturer={p.manufacturer}, product={p.product}, vid={vid}, pid={pid},"
+            "serial_number={p.serial_number}\n"
+        )
     return result.rstrip()
 
 
