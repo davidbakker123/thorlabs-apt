@@ -28,7 +28,7 @@ def list_devices() -> str:
             vid = f"{vid:#06x}"
         result += (
             f"device={p.device}, manufacturer={p.manufacturer}, product={p.product}, vid={vid}, pid={pid},"
-            "serial_number={p.serial_number}\n"
+            f"serial_number={p.serial_number}\n"
         )
     return result.rstrip()
 

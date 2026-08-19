@@ -1,7 +1,7 @@
 [project]
 name = "thorlabs-apt"
 version = "0.0.1"
-description = "Control software for projects in the QuTe lab."
+description = "Python implementation of the Thorlabs APT communication protocol."
 authors = [
     { name = "David Bakker", email = "david.bakker@tno.nl" },
 ]
@@ -9,11 +9,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 keywords = ["device", "control"]
 dependencies = [
-    "pyserial>=3.5",
-    "pytest>=9.0.2",
-    "pyusb>=1.3.1",
-    "tox>=4.52.0",
-    "ty>=0.0.69",
+    "pyserial>=3.5",    
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -22,7 +18,8 @@ classifiers = [
 [dependency-groups]
 dev = [
     "coverage>=7.6.0",
-    "mypy>=1.7.0",
+    "ty>=0.0.69",
+    "tox>=4.52.0",
     "pytest>=8.2.2",
     "ruff>=0.5,<0.13"
 ]
@@ -116,5 +113,5 @@ build-backend = "hatchling.build"
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["thorlabs-apt"]
+packages = ["thorlabs_apt"]
 
