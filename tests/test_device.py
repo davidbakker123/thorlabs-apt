@@ -6,9 +6,9 @@ import serial
 
 from thorlabs_apt.device import APTDevice, find_device, list_devices
 from thorlabs_apt.packet import (
+    MGMSG_HW_GET_INFO,
     APTPacket,
     HardwareInfo,
-    MGMSG_HW_GET_INFO,
     get_identify_packet,
     request_hardware_info_packet,
     set_channel_enable_state_packet,
@@ -104,7 +104,9 @@ class TestAPTDevice:
         assert device.request(packet) == response_data
         serial_port.write.assert_called_with(packet.tobytes())
 
-    def test_set_marks_packet_as_data_packet_and_appends_payload(self, device: APTDevice, serial_port: MagicMock) -> None:
+    def test_set_marks_packet_as_data_packet_and_appends_payload(
+        self, device: APTDevice, serial_port: MagicMock
+    ) -> None:
         packet = APTPacket(message_id=0x4321, destination=0x50, source=0x01)
 
         device.set(packet, b"data")
@@ -130,5 +132,3 @@ class TestAPTDevice:
         serial_port.read.side_effect = [APTPacket(message_id=0x0212, param2=0x01).tobytes()]
 
         assert device.get_channel_enable_state(2) is True
-
-
