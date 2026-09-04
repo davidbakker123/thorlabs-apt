@@ -1,5 +1,5 @@
 [project]
-name = "thorlabs-apt"
+name = "apt-thorlabs"
 version = "0.0.1"
 description = "Python implementation of the Thorlabs APT communication protocol."
 authors = [
